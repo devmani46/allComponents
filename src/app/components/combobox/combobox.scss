@@ -1,0 +1,168 @@
+.combobox-container {
+  position: relative;
+  width: 250px;
+  font-family: Arial, sans-serif;
+
+  .combobox-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 8px;
+    cursor: pointer;
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+
+  .selected-preview {
+    position: absolute;
+    left: 8px;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #666;
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+    &:hover {
+      border-color: #999;
+    }
+
+    &:focus-within {
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    }
+
+    input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .non-searchable {
+      flex: 1;
+      color: #666;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .arrow {
+      margin-left: 8px;
+      font-size: 12px;
+      user-select: none;
+    }
+  }
+
+  .combobox-options {
+    list-style: none;
+    margin: 4px 0 0 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+
+    // dropdown animation
+    opacity: 0;
+    transform: scaleY(0.95);
+    transform-origin: top;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
+    &.open {
+      opacity: 1;
+      transform: scaleY(1);
+      pointer-events: auto;
+    }
+
+    &.closed {
+      opacity: 0;
+      transform: scaleY(0.95);
+      pointer-events: none;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+
+      input[type="checkbox"] {
+        pointer-events: none;
+      }
+
+      &:hover {
+        background: #f0f0f0;
+      }
+
+      &.disabled {
+        color: #aaa;
+        cursor: not-allowed;
+        background: #f9f9f9;
+      }
+
+      &.highlighted {
+        background: #007bff;
+        color: #fff;
+
+        input[type="checkbox"] {
+          accent-color: #fff;
+        }
+      }
+
+      &.selected {
+        font-weight: 500;
+      }
+
+      &.no-result {
+        text-align: center;
+        font-style: italic;
+        color: #777;
+        cursor: default;
+        background: #fff;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+/* Fluent-style animated underline */
+.fw-combobox {
+  position: relative;
+  min-width: 250px;
+
+  &:focus-within::after {
+    transform: scaleX(1);
+  }
+
+  &::after {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    left: -1px;
+    bottom: -1px;
+    right: -1px;
+    height: max(2px, var(--borderRadiusMedium));
+    border-bottom-left-radius: var(--borderRadiusMedium);
+    border-bottom-right-radius: var(--borderRadiusMedium);
+    border-bottom: var(--strokeWidthThick) solid var(--colorCompoundBrandStroke);
+    clip-path: inset(calc(100% - 2px) 0 0 0);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
+}
