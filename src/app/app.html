@@ -183,6 +183,21 @@
   </p>
   }
 
+  <app-combobox
+    [options]="countries"
+    [searchable]="false"
+    [multiple]="false"
+    [disabled]="true"
+    [title]="selectedCountries[4]"
+    placeholder="Select a country"
+    (valueChange)="onCountrySelected(4, $event)"
+  ></app-combobox>
+  @if (selectedCountries[4]) {
+  <p>
+    You selected: <strong>{{ selectedCountries[4] }}</strong>
+  </p>
+  }
+
   <div style="margin-top: 16px">
     <button class="submit-btn" type="submit">Submit</button>
   </div>

@@ -14,6 +14,8 @@ export class Combobox implements OnDestroy, AfterViewInit {
   @Input() searchable: boolean = true;
   @Input() disabledOptions: string[] = [];
   @Input() multiple: boolean = true;
+  @Input() disabled: boolean = false;
+
 
   @Output() valueChange = new EventEmitter<string[] | string>();
 
@@ -61,11 +63,13 @@ export class Combobox implements OnDestroy, AfterViewInit {
   }
 
   openDropdown(): void {
+    if (this.disabled) return;
     this.isOpen = true;
     this.highlightedIndex = -1;
   }
 
   toggleDropdown(): void {
+    if (this.disabled) return;
     this.isOpen = !this.isOpen;
     if (this.isOpen) this.highlightedIndex = -1;
   }
@@ -76,7 +80,7 @@ export class Combobox implements OnDestroy, AfterViewInit {
   }
 
   selectOption(option: string): void {
-    if (this.disabledOptions.includes(option)) return;
+    if (this.disabled || this.disabledOptions.includes(option)) return;
 
     if (this.multiple) {
       const index = this.selected.indexOf(option);

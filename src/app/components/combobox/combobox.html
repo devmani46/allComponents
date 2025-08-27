@@ -6,17 +6,18 @@
       (ngModelChange)="onInputChange($event)"
       [placeholder]="selected.length ? '' : placeholder"
       (focus)="openDropdown()"
+      [disabled]="disabled"
     />
 
     @if (selected.length && !searchText) {
     <span class="selected-preview">{{ displayPlaceholder }}</span>
     } } @else {
-    <div class="non-searchable" (click)="toggleDropdown()">
+    <div class="non-searchable" (click)="toggleDropdown()" [class.disabled]="disabled">
       {{ displayPlaceholder }}
     </div>
     }
 
-    <span class="material-symbols-outlined arrow" (click)="toggleDropdown()">
+    <span class="material-symbols-outlined arrow" (click)="toggleDropdown()" [class.disabled]="disabled">
       {{ isOpen ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
     </span>
   </div>
