@@ -1,6 +1,4 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-
   <h3>Input Sizes</h3>
 
   <app-fui-field label="Small input">
@@ -138,7 +136,9 @@
     (valueChange)="onCountrySelected(0, $event)"
   ></app-combobox>
   @if (selectedCountries[0]) {
-    <p>You selected: <strong>{{ selectedCountries[0] }}</strong></p>
+  <p>
+    You selected: <strong>{{ selectedCountries[0] }}</strong>
+  </p>
   }
 
   <app-combobox
@@ -150,7 +150,9 @@
     (valueChange)="onCountrySelected(1, $event)"
   ></app-combobox>
   @if (selectedCountries[1]) {
-    <p>You selected: <strong>{{ selectedCountries[1] }}</strong></p>
+  <p>
+    You selected: <strong>{{ selectedCountries[1] }}</strong>
+  </p>
   }
 
   <app-combobox
@@ -162,7 +164,9 @@
     (valueChange)="onCountrySelected(2, $event)"
   ></app-combobox>
   @if (selectedCountries[2]) {
-    <p>You selected: <strong>{{ selectedCountries[2] }}</strong></p>
+  <p>
+    You selected: <strong>{{ selectedCountries[2] }}</strong>
+  </p>
   }
 
   <app-combobox
@@ -174,11 +178,12 @@
     (valueChange)="onCountrySelected(3, $event)"
   ></app-combobox>
   @if (selectedCountries[3]) {
-    <p>You selected: <strong>{{ selectedCountries[3] }}</strong></p>
+  <p>
+    You selected: <strong>{{ selectedCountries[3] }}</strong>
+  </p>
   }
 
-
   <div style="margin-top: 16px">
-    <button type="submit">Submit</button>
+    <button class="submit-btn" type="submit">Submit</button>
   </div>
 </form>

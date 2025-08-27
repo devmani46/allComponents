@@ -1,24 +1,23 @@
 <div class="combobox-container fw-combobox">
-  <div class="combobox-input">
+  <div class="combobox-input fw-small">
     @if (searchable) {
-      <input
-        [ngModel]="searchText"
-        (ngModelChange)="onInputChange($event)"
-        [placeholder]="selected.length ? '' : placeholder"
-        (focus)="openDropdown()"
-      />
+    <input
+      [ngModel]="searchText"
+      (ngModelChange)="onInputChange($event)"
+      [placeholder]="selected.length ? '' : placeholder"
+      (focus)="openDropdown()"
+    />
 
-      @if (selected.length && !searchText) {
-        <span class="selected-preview">{{ displayPlaceholder }}</span>
-      }
-    } @else {
-      <div class="non-searchable" (click)="toggleDropdown()">
-        {{ displayPlaceholder }}
-      </div>
+    @if (selected.length && !searchText) {
+    <span class="selected-preview">{{ displayPlaceholder }}</span>
+    } } @else {
+    <div class="non-searchable" (click)="toggleDropdown()">
+      {{ displayPlaceholder }}
+    </div>
     }
 
-    <span class="arrow" (click)="toggleDropdown()">
-      {{ isOpen ? '▲' : '▼' }}
+    <span class="material-symbols-outlined arrow" (click)="toggleDropdown()">
+      {{ isOpen ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
     </span>
   </div>
 
@@ -28,22 +27,20 @@
     [class.closed]="!isOpen"
   >
     @if (filteredOptions.length === 0) {
-      <li class="no-result disabled">No result found</li>
-    }
-
-    @for (option of filteredOptions; let i = $index; track option) {
-        <li
-          #optionItem
-          (click)="selectOption(option)"
-          [class.disabled]="isDisabled(option)"
-          [class.highlighted]="i === highlightedIndex"
-          [class.selected]="isSelected(option)"
-        >
-          @if (multiple) {
-            <input type="checkbox" [checked]="isSelected(option)" />
-          }
-          {{ option }}
-        </li>
+    <li class="no-result disabled">No result found</li>
+    } @for (option of filteredOptions; let i = $index; track option) {
+    <li
+      #optionItem
+      (click)="selectOption(option)"
+      [class.disabled]="isDisabled(option)"
+      [class.highlighted]="i === highlightedIndex"
+      [class.selected]="isSelected(option)"
+    >
+      @if (multiple) {
+      <input type="checkbox" [checked]="isSelected(option)" />
+      }
+      {{ option }}
+    </li>
     }
   </ul>
 </div>
