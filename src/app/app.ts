@@ -31,6 +31,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      // Input fields
       smallInput: [''],
       mediumInput: ['', Validators.required],
       largeInput: [''],
@@ -42,6 +43,7 @@ export class App implements OnInit {
       horizontalSmall: [''],
       horizontalLarge: [''],
       disabledField: [{ value: '', disabled: true }],
+
       countriesControl: [[]],
     });
 

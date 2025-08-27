@@ -1,62 +1,6 @@
-<app-combobox
-  [options]="countries"
-  [searchable]="true"
-  [multiple]="true"
-  [title]= "selectedCountries[0]"
-  placeholder="Select or search multiple countries"
-  (valueChange)="onCountrySelected(0, $event)"
-></app-combobox>
-@if (selectedCountries[0]) {
-  <p>You selected: <strong>{{ selectedCountries[0] }}</strong></p>
-}
-
-
-<hr />
-
-<app-combobox
-  [options]="countries"
-  [searchable]="true"
-  [multiple]="false"
-  [title]= "selectedCountries[1]"
-  placeholder="Select or search a country"
-  (valueChange)="onCountrySelected(1, $event)"
-></app-combobox>
-@if (selectedCountries[1]) {
-  <p>You selected: <strong>{{ selectedCountries[1] }}</strong></p>
-}
-
-<app-combobox
-  [options]="countries"
-  [searchable]="false"
-  [multiple]="true"
-  [title]= "selectedCountries[2]"
-  placeholder="Select multiple countries"
-  (valueChange)="onCountrySelected(2, $event)"
-></app-combobox>
-@if (selectedCountries[2]) {
-  <p>You selected: <strong>{{ selectedCountries[2] }}</strong></p>
-}
-
-
-<hr />
-
-<app-combobox
-  [options]="countries"
-  [searchable]="false"
-  [multiple]="false"
-  [title]= "selectedCountries[3]"
-  placeholder="Select a country"
-  (valueChange)="onCountrySelected(3, $event)"
-></app-combobox>
-@if (selectedCountries[3]) {
-  <p>You selected: <strong>{{ selectedCountries[3] }}</strong></p>
-}
-
-
-
-<hr />
-
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+
   <h3>Input Sizes</h3>
 
   <app-fui-field label="Small input">
@@ -182,6 +126,57 @@
       placeholder="Can't type here"
     ></app-fui-input>
   </app-fui-field>
+
+  <h3>Comboboxes</h3>
+
+  <app-combobox
+    [options]="countries"
+    [searchable]="true"
+    [multiple]="true"
+    [title]="selectedCountries[0]"
+    placeholder="Select or search multiple countries"
+    (valueChange)="onCountrySelected(0, $event)"
+  ></app-combobox>
+  @if (selectedCountries[0]) {
+    <p>You selected: <strong>{{ selectedCountries[0] }}</strong></p>
+  }
+
+  <app-combobox
+    [options]="countries"
+    [searchable]="true"
+    [multiple]="false"
+    [title]="selectedCountries[1]"
+    placeholder="Select or search a country"
+    (valueChange)="onCountrySelected(1, $event)"
+  ></app-combobox>
+  @if (selectedCountries[1]) {
+    <p>You selected: <strong>{{ selectedCountries[1] }}</strong></p>
+  }
+
+  <app-combobox
+    [options]="countries"
+    [searchable]="false"
+    [multiple]="true"
+    [title]="selectedCountries[2]"
+    placeholder="Select multiple countries"
+    (valueChange)="onCountrySelected(2, $event)"
+  ></app-combobox>
+  @if (selectedCountries[2]) {
+    <p>You selected: <strong>{{ selectedCountries[2] }}</strong></p>
+  }
+
+  <app-combobox
+    [options]="countries"
+    [searchable]="false"
+    [multiple]="false"
+    [title]="selectedCountries[3]"
+    placeholder="Select a country"
+    (valueChange)="onCountrySelected(3, $event)"
+  ></app-combobox>
+  @if (selectedCountries[3]) {
+    <p>You selected: <strong>{{ selectedCountries[3] }}</strong></p>
+  }
+
 
   <div style="margin-top: 16px">
     <button type="submit">Submit</button>
