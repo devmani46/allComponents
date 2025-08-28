@@ -1,0 +1,23 @@
+<table cdk-table [dataSource]="dataSource" class="cdk-table">
+  <!-- ID Column -->
+  <ng-container cdkColumnDef="id">
+    <th cdk-header-cell *cdkHeaderCellDef>ID</th>
+    <td cdk-cell *cdkCellDef="let element">{{ element.id }}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container cdkColumnDef="name">
+    <th cdk-header-cell *cdkHeaderCellDef>Name</th>
+    <td cdk-cell *cdkCellDef="let element">{{ element.name }}</td>
+  </ng-container>
+
+  <!-- Email Column -->
+  <ng-container cdkColumnDef="email">
+    <th cdk-header-cell *cdkHeaderCellDef>Email</th>
+    <td cdk-cell *cdkCellDef="let element">{{ element.email }}</td>
+  </ng-container>
+
+  <!-- Header and Row -->
+  <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+</table>

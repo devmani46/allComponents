@@ -1,11 +1,18 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+  FormGroup,
+} from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { FuiField } from './components/fui-field/fui-field';
 import { FuiInput } from './components/fui-input/fui-input';
 import { Combobox } from './components/combobox/combobox';
 import { Country } from './services/country';
+import { CdkRecycleRows } from '@angular/cdk/table';
+import { CdkTable } from './components/cdk-table/cdk-table';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +23,9 @@ import { Country } from './services/country';
     FormsModule,
     FuiField,
     FuiInput,
-    Combobox
+    Combobox,
+    CdkRecycleRows,
+    CdkTable,
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],

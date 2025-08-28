@@ -1,0 +1,15 @@
+.cdk-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cdk-header-cell,
+.cdk-cell {
+  border-bottom: 1px solid var(--colorNeutralStroke1);
+  text-align: left;
+  padding: 8px;
+}
+
+.cdk-header-cell {
+  font-weight: normal;
+}
