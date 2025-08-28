@@ -11,7 +11,7 @@ import { FuiField } from './components/fui-field/fui-field';
 import { FuiInput } from './components/fui-input/fui-input';
 import { Combobox } from './components/combobox/combobox';
 import { Country } from './services/country';
-import { CdkRecycleRows } from '@angular/cdk/table';
+import { CdkRecycleRows, CdkTableModule } from '@angular/cdk/table';
 import { CdkTable } from './components/cdk-table/cdk-table';
 
 @Component({
@@ -24,8 +24,8 @@ import { CdkTable } from './components/cdk-table/cdk-table';
     FuiField,
     FuiInput,
     Combobox,
-    CdkRecycleRows,
     CdkTable,
+    CdkTableModule,
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],

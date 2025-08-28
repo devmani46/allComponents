@@ -1,23 +1,49 @@
-<table cdk-table [dataSource]="dataSource" class="cdk-table">
-  <!-- ID Column -->
-  <ng-container cdkColumnDef="id">
-    <th cdk-header-cell *cdkHeaderCellDef>ID</th>
-    <td cdk-cell *cdkCellDef="let element">{{ element.id }}</td>
+<table cdk-table [dataSource]="items" class="cdk-table">
+
+  <!-- File Column -->
+  <ng-container cdkColumnDef="file">
+    <th cdk-header-cell *cdkHeaderCellDef> File </th>
+    <td cdk-cell *cdkCellDef="let item">
+      <div class="cell-layout">
+        <span class="icon">{{ getFileIcon(item.file.label) }}</span>
+        <span>{{ item.file.label }}</span>
+      </div>
+    </td>
   </ng-container>
 
-  <!-- Name Column -->
-  <ng-container cdkColumnDef="name">
-    <th cdk-header-cell *cdkHeaderCellDef>Name</th>
-    <td cdk-cell *cdkCellDef="let element">{{ element.name }}</td>
+  <!-- Author Column -->
+  <ng-container cdkColumnDef="author">
+    <th cdk-header-cell *cdkHeaderCellDef> Author </th>
+    <td cdk-cell *cdkCellDef="let item">
+      <div class="cell-layout">
+        <div class="avatar" [ngClass]="item.author.status[0]">
+          {{ getInitials(item.author.label) }}
+        </div>
+        <span>{{ item.author.label }}</span>
+      </div>
+    </td>
   </ng-container>
 
-  <!-- Email Column -->
-  <ng-container cdkColumnDef="email">
-    <th cdk-header-cell *cdkHeaderCellDef>Email</th>
-    <td cdk-cell *cdkCellDef="let element">{{ element.email }}</td>
+  <!-- Last Updated Column -->
+  <ng-container cdkColumnDef="lastUpdated">
+    <th cdk-header-cell *cdkHeaderCellDef> Last updated </th>
+    <td cdk-cell *cdkCellDef="let item">
+      {{ item.lastUpdated.label }}
+    </td>
   </ng-container>
 
-  <!-- Header and Row -->
+  <!-- Last Update Column -->
+  <ng-container cdkColumnDef="lastUpdate">
+    <th cdk-header-cell *cdkHeaderCellDef> Last update </th>
+    <td cdk-cell *cdkCellDef="let item">
+      <div class="cell-layout">
+        <span class="icon">{{ getUpdateIcon(item.lastUpdate.label) }}</span>
+        <span>{{ item.lastUpdate.label }}</span>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Render Header + Rows -->
   <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
 </table>
