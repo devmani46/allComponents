@@ -6,7 +6,7 @@
   box-sizing: border-box;
 
   min-height: 32px;
-  padding: 4px 8px;
+  padding: 0px 8px;
 
   background-color: var(--colorNeutralBackground1);
   border: 1px solid var(--colorNeutralStroke1);
@@ -157,7 +157,7 @@
 
   &.fw-small {
     min-height: 24px;
-    padding-block: 2px;
+    padding-block: 0px;
     padding-inline: 6px;
     font-size: 12px;
 
@@ -171,7 +171,7 @@
 
   &.fw-large {
     min-height: 40px;
-    padding-block: 8px;
+    padding-block: 0px;
     padding-inline: 12px;
     font-size: 16px;
 
@@ -187,4 +187,3 @@
 .fw-input.fw-disabled {
   pointer-events: none;
 }
-

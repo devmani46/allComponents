@@ -183,15 +183,21 @@
   </p>
   }
 
-  <app-combobox
-    [options]="countries"
-    [searchable]="false"
-    [multiple]="false"
-    [disabled]="true"
-    [title]="selectedCountries[4]"
-    placeholder="Select a country"
-    (valueChange)="onCountrySelected(4, $event)"
-  ></app-combobox>
+  <div style="display: flex">
+    <app-combobox
+      [options]="countries"
+      [searchable]="false"
+      [multiple]="false"
+      [disabled]="true"
+      [title]="selectedCountries[4]"
+      placeholder="Select a country"
+      (valueChange)="onCountrySelected(4, $event)"
+    ></app-combobox>
+    <app-fui-input
+      formControlName="smallInput"
+      placeholder="Small input"
+    ></app-fui-input>
+  </div>
   @if (selectedCountries[4]) {
   <p>
     You selected: <strong>{{ selectedCountries[4] }}</strong>
