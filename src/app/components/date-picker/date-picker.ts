@@ -1,15 +1,21 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-date-picker',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './date-picker.html',
   styleUrls: ['./date-picker.scss'],
 })
 export class DatePicker {
+  month = '';
+  day = '';
+  year = '';
+  activePart: 'month' | 'day' | 'year' | null = null;
+
   selectedDate: Date | null = null;
   focusedDate: Date | null = null;
   showCalendar = false;
@@ -20,36 +26,27 @@ export class DatePicker {
     'July','August','September','October','November','December'
   ];
 
-  inputValue = '';
-
   ngOnInit() {
     this.generateCalendar();
   }
 
-  get displayMaskedValue(): string {
-    const placeholder = 'MM/DD/YYYY';
-    const val = this.inputValue;
-    const parts = [val.slice(0, 2), val.slice(2, 4), val.slice(4, 8)];
-    let masked = '';
-
-    masked += parts[0] || 'MM';
-    if (val.length > 2) masked += '/';
-    masked += parts[1] || (val.length > 2 ? 'DD' : '/DD');
-    if (val.length > 4) masked += '/';
-    masked += parts[2] || (val.length > 4 ? 'YYYY' : '/YYYY');
-
-    return masked.replace(/\/{2,}/g, '/');
+  setActive(part: 'month' | 'day' | 'year') {
+    this.activePart = part;
   }
 
-  onInput(event: any) {
+  onSegmentInput(part: 'month' | 'day' | 'year', event: any) {
     let val = event.target.value.replace(/\D/g, '');
-    if (val.length > 8) val = val.slice(0, 8);
-    this.inputValue = val;
+    if (part === 'month' || part === 'day') val = val.slice(0, 2);
+    if (part === 'year') val = val.slice(0, 4);
 
-    if (val.length === 8) {
-      const m = parseInt(val.slice(0, 2), 10);
-      const d = parseInt(val.slice(2, 4), 10);
-      const y = parseInt(val.slice(4, 8), 10);
+    if (part === 'month') this.month = val;
+    if (part === 'day') this.day = val;
+    if (part === 'year') this.year = val;
+
+    if (this.month.length === 2 && this.day.length === 2 && this.year.length === 4) {
+      const m = parseInt(this.month, 10);
+      const d = parseInt(this.day, 10);
+      const y = parseInt(this.year, 10);
       const date = new Date(y, m - 1, d);
       if (!isNaN(date.getTime())) {
         this.selectedDate = date;
@@ -58,8 +55,6 @@ export class DatePicker {
     } else {
       this.selectedDate = null;
     }
-
-    event.target.value = this.displayMaskedValue;
   }
 
   onIconClick(event: MouseEvent) {
@@ -77,9 +72,10 @@ export class DatePicker {
   }
 
   clearDate() {
+    this.month = '';
+    this.day = '';
+    this.year = '';
     this.selectedDate = null;
-    this.focusedDate = null;
-    this.inputValue = '';
   }
 
   selectDate(day: Date | null) {
@@ -88,15 +84,9 @@ export class DatePicker {
     this.focusedDate = day;
     this.showCalendar = false;
 
-    const formatted = this.formatDate(day).replace(/\D/g, '');
-    this.inputValue = formatted;
-  }
-
-  formatDate(date: Date): string {
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    const y = date.getFullYear();
-    return `${m}/${d}/${y}`;
+    this.month = String(day.getMonth() + 1).padStart(2, '0');
+    this.day = String(day.getDate()).padStart(2, '0');
+    this.year = String(day.getFullYear());
   }
 
   prevMonth() {

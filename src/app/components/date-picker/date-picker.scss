@@ -1,9 +1,8 @@
 .date-picker-container {
   display: inline-block;
-  font-family: Onest, sans-serif;
+  font-family: 'Onest', sans-serif;
   position: relative;
   color: #333;
-  outline: none;
 
   label {
     display: block;
@@ -16,20 +15,75 @@
     display: flex;
     align-items: center;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 6px 10px;
-    width: 240px;
+    width: 270px;
     background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
 
-    input {
-      border: none;
-      outline: none;
+    &:focus-within {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px rgba(25,118,210,0.15);
+    }
+
+    .segmented-input {
+      display: flex;
+      align-items: center;
       flex: 1;
-      font-size: 15px;
-      background: transparent;
-      color: #000;
-      &::placeholder {
-        color: #aaa;
+      justify-content: space-between;
+      gap: 4px;
+
+      .divider {
+        color: #888;
+        font-weight: 600;
+      }
+
+      .segment {
+        position: relative;
+        width: 50px;
+        text-align: center;
+        border-radius: 6px;
+        transition: all 0.25s ease;
+        background: #f8f9fb;
+        border: 1px solid transparent;
+        padding: 2px 0;
+
+        &.active {
+          border-color: #1976d2;
+          background: #e3f2fd;
+          transform: scale(1.05);
+        }
+
+        input {
+          width: 100%;
+          border: none;
+          outline: none;
+          text-align: center;
+          background: transparent;
+          font-size: 15px;
+          color: #000;
+        }
+
+        .placeholder {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #aaa;
+          pointer-events: none;
+          font-size: 15px;
+          transition: all 0.2s ease;
+        }
+
+        .placeholder.hidden {
+          opacity: 0;
+          transform: scale(0.8);
+        }
       }
     }
 
@@ -37,6 +91,11 @@
       font-size: 20px;
       cursor: pointer;
       color: #666;
+      margin-left: 6px;
+      transition: color 0.2s ease;
+      &:hover {
+        color: #1976d2;
+      }
     }
 
     .clear-btn {
@@ -51,13 +110,13 @@
 
   .calendar {
     position: absolute;
-    top: 65px;
+    top: 70px;
     left: 0;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 12px;
     padding: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     z-index: 10;
     width: 260px;
 
@@ -67,14 +126,6 @@
       align-items: center;
       font-weight: 500;
       margin-bottom: 8px;
-
-      button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-        color: #444;
-      }
     }
 
     .weekdays, .days {
@@ -84,35 +135,13 @@
       gap: 4px;
     }
 
-    .weekdays div {
-      font-weight: 600;
-      color: #555;
-      font-size: 13px;
-    }
-
     .days div {
       padding: 6px 0;
       border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
-
-      &.empty {
-        background: transparent;
-        cursor: default;
-      }
-
-      &.selected {
-        background-color: #1976d2;
-        color: white;
-      }
-
-      &.focused {
-        outline: 2px solid #1976d2;
-      }
-
-      &:hover:not(.empty):not(.selected) {
-        background: #e3f2fd;
-      }
+      &.selected { background-color: #1976d2; color: white; }
+      &:hover:not(.selected) { background: #e3f2fd; }
     }
   }
 }

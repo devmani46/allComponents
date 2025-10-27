@@ -1,14 +1,61 @@
 <div class="date-picker-container" tabindex="0" (keydown)="onKeyDown($event)">
-  <label>DesktopDatePicker</label>
+  <label>Modern Date Picker</label>
 
   <div class="input-wrapper" (click)="toggleCalendar()">
-    <input
-      type="text"
-      maxlength="10"
-      [value]="displayMaskedValue"
-      (input)="onInput($event)"
-      (focus)="showCalendar = true"
-    />
+    <div class="segmented-input" (click)="$event.stopPropagation()">
+
+      <div
+        class="segment"
+        [class.active]="activePart === 'month'"
+        (click)="setActive('month')"
+      >
+        <span class="placeholder" [class.hidden]="month.length > 0 || activePart === 'month'">MM</span>
+        <input
+          type="text"
+          maxlength="2"
+          [(ngModel)]="month"
+          (focus)="setActive('month')"
+          (input)="onSegmentInput('month', $event)"
+          [value]="month"
+        />
+      </div>
+
+      <span class="divider">/</span>
+
+      <div
+        class="segment"
+        [class.active]="activePart === 'day'"
+        (click)="setActive('day')"
+      >
+        <span class="placeholder" [class.hidden]="day.length > 0 || activePart === 'day'">DD</span>
+        <input
+          type="text"
+          maxlength="2"
+          [(ngModel)]="day"
+          (focus)="setActive('day')"
+          (input)="onSegmentInput('day', $event)"
+          [value]="day"
+        />
+      </div>
+
+      <span class="divider">/</span>
+
+      <div
+        class="segment"
+        [class.active]="activePart === 'year'"
+        (click)="setActive('year')"
+      >
+        <span class="placeholder" [class.hidden]="year.length > 0 || activePart === 'year'">YYYY</span>
+        <input
+          type="text"
+          maxlength="4"
+          [(ngModel)]="year"
+          (focus)="setActive('year')"
+          (input)="onSegmentInput('year', $event)"
+          [value]="year"
+        />
+      </div>
+    </div>
 
     @if (selectedDate) {
       <button class="clear-btn" (click)="clearDate(); $event.stopPropagation()">×</button>
