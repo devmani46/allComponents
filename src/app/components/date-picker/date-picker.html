@@ -1,4 +1,4 @@
-<div class="date-picker-container" tabindex="0" (keydown)="onKeyDown($event)">
+<div class="date-picker-container" #container tabindex="0">
   <label> Date Picker</label>
 
   <div class="input-wrapper" (click)="toggleCalendar()">
@@ -14,10 +14,10 @@
           #monthInput
           type="text"
           maxlength="2"
-          [(ngModel)]="month"
+          [value]="month"
           (focus)="setActive('month')"
           (input)="onSegmentInput('month', $event)"
-          [value]="month"
+          (keydown)="onKeyDown($event); $event.stopPropagation()"
         />
       </div>
 
@@ -33,10 +33,10 @@
           #dayInput
           type="text"
           maxlength="2"
-          [(ngModel)]="day"
+          [value]="day"
           (focus)="setActive('day')"
           (input)="onSegmentInput('day', $event)"
-          [value]="day"
+          (keydown)="onKeyDown($event); $event.stopPropagation()"
         />
       </div>
 
@@ -52,10 +52,10 @@
           #yearInput
           type="text"
           maxlength="4"
-          [(ngModel)]="year"
+          [value]="year"
           (focus)="setActive('year')"
           (input)="onSegmentInput('year', $event)"
-          [value]="year"
+          (keydown)="onKeyDown($event); $event.stopPropagation()"
         />
       </div>
     </div>

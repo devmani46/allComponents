@@ -14,6 +14,7 @@ export class DatePicker {
   @ViewChild('monthInput', { static: false }) monthInput!: ElementRef;
   @ViewChild('dayInput', { static: false }) dayInput!: ElementRef;
   @ViewChild('yearInput', { static: false }) yearInput!: ElementRef;
+  @ViewChild('container', { static: false }) container!: ElementRef;
 
   month = '';
   day = '';
@@ -137,6 +138,29 @@ export class DatePicker {
     });
   }
 
+  updateSelectedDate() {
+    if (this.month.length === 2 && this.day.length === 2 && this.year.length === 4) {
+      const m = parseInt(this.month, 10);
+      const d = parseInt(this.day, 10);
+      const y = parseInt(this.year, 10);
+      const date = new Date(y, m - 1, d);
+      if (!isNaN(date.getTime())) {
+        this.selectedDate = date;
+        this.focusedDate = date;
+      }
+    } else {
+      this.selectedDate = null;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    if (this.container && !this.container.nativeElement.contains(event.target)) {
+      this.showCalendar = false;
+      this.activePart = null;
+    }
+  }
+
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (this.showCalendar) {
@@ -164,20 +188,79 @@ export class DatePicker {
         this.generateCalendar();
       }
     } else {
+      // Handle segment-specific arrow keys
+      if (this.activePart === 'month') {
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          const currentMonth = parseInt(this.month) || 1;
+          const newMonth = Math.max(1, currentMonth - 1);
+          this.month = String(newMonth).padStart(2, '0');
+          this.updateSelectedDate();
+        } else if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          const currentMonth = parseInt(this.month) || 1;
+          const newMonth = Math.min(12, currentMonth + 1);
+          this.month = String(newMonth).padStart(2, '0');
+          this.updateSelectedDate();
+        }
+      } else if (this.activePart === 'year') {
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          const currentYear = parseInt(this.year) || new Date().getFullYear();
+          const newYear = currentYear - 1;
+          this.year = String(newYear);
+          this.updateSelectedDate();
+        } else if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          const currentYear = parseInt(this.year) || new Date().getFullYear();
+          const newYear = currentYear + 1;
+          this.year = String(newYear);
+          this.updateSelectedDate();
+        }
+      } else if (this.activePart === 'day') {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          const currentDay = parseInt(this.day) || 1;
+          const newDay = Math.max(1, currentDay - 1);
+          this.day = String(newDay).padStart(2, '0');
+          this.updateSelectedDate();
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          const currentDay = parseInt(this.day) || 1;
+          const newDay = Math.min(31, currentDay + 1); // Simplified, could be month-specific
+          this.day = String(newDay).padStart(2, '0');
+          this.updateSelectedDate();
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          const currentDay = parseInt(this.day) || 1;
+          const newDay = Math.max(1, currentDay - 7);
+          this.day = String(newDay).padStart(2, '0');
+          this.updateSelectedDate();
+        } else if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          const currentDay = parseInt(this.day) || 1;
+          const newDay = Math.min(31, currentDay + 7); // Simplified
+          this.day = String(newDay).padStart(2, '0');
+          this.updateSelectedDate();
+        }
+      }
+
       // Handle arrow navigation between segments
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-        event.preventDefault();
-        let nextPart: 'month' | 'day' | 'year' | null = null;
-        if (event.key === 'ArrowLeft') {
-          if (this.activePart === 'day') nextPart = 'month';
-          else if (this.activePart === 'year') nextPart = 'day';
-        } else if (event.key === 'ArrowRight') {
-          if (this.activePart === 'month') nextPart = 'day';
-          else if (this.activePart === 'day') nextPart = 'year';
-        }
-        if (nextPart) {
-          this.setActive(nextPart);
-          this.focusSegment(nextPart);
+        if (this.activePart !== 'day' || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) {
+          event.preventDefault();
+          let nextPart: 'month' | 'day' | 'year' | null = null;
+          if (event.key === 'ArrowLeft') {
+            if (this.activePart === 'day') nextPart = 'month';
+            else if (this.activePart === 'year') nextPart = 'day';
+          } else if (event.key === 'ArrowRight') {
+            if (this.activePart === 'month') nextPart = 'day';
+            else if (this.activePart === 'day') nextPart = 'year';
+          }
+          if (nextPart) {
+            this.setActive(nextPart);
+            this.focusSegment(nextPart);
+          }
         }
       }
     }
