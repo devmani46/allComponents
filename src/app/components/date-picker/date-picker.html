@@ -1,0 +1,48 @@
+<div class="date-picker-container" tabindex="0" (keydown)="onKeyDown($event)">
+  <label>DesktopDatePicker</label>
+
+  <div class="input-wrapper" (click)="toggleCalendar()">
+    <input
+      type="text"
+      maxlength="10"
+      [value]="displayMaskedValue"
+      (input)="onInput($event)"
+      (focus)="showCalendar = true"
+    />
+
+    @if (selectedDate) {
+      <button class="clear-btn" (click)="clearDate(); $event.stopPropagation()">×</button>
+    }
+
+    <mat-icon class="icon" (click)="onIconClick($event)">calendar_today</mat-icon>
+  </div>
+
+  @if (showCalendar) {
+    <div class="calendar">
+      <div class="header">
+        <button (click)="prevMonth()">‹</button>
+        <span>{{ months[displayMonth.getMonth()] }} {{ displayMonth.getFullYear() }}</span>
+        <button (click)="nextMonth()">›</button>
+      </div>
+
+      <div class="weekdays">
+        @for (d of ['S','M','T','W','T','F','S']; track d) {
+          <div>{{ d }}</div>
+        }
+      </div>
+
+      <div class="days">
+        @for (day of daysInMonth; track day) {
+          <div
+            [class.empty]="!day"
+            [class.selected]="selectedDate && day && day.toDateString() === selectedDate.toDateString()"
+            [class.focused]="focusedDate && day && day.toDateString() === focusedDate.toDateString()"
+            (click)="selectDate(day)"
+          >
+            {{ day ? day.getDate() : '' }}
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

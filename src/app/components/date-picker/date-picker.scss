@@ -1,0 +1,118 @@
+.date-picker-container {
+  display: inline-block;
+  font-family: Onest, sans-serif;
+  position: relative;
+  color: #333;
+  outline: none;
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 6px 10px;
+    width: 240px;
+    background: white;
+
+    input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 15px;
+      background: transparent;
+      color: #000;
+      &::placeholder {
+        color: #aaa;
+      }
+    }
+
+    .icon {
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .clear-btn {
+      border: none;
+      background: transparent;
+      font-size: 18px;
+      color: #888;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+  }
+
+  .calendar {
+    position: absolute;
+    top: 65px;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+    width: 260px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      margin-bottom: 8px;
+
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #444;
+      }
+    }
+
+    .weekdays, .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      gap: 4px;
+    }
+
+    .weekdays div {
+      font-weight: 600;
+      color: #555;
+      font-size: 13px;
+    }
+
+    .days div {
+      padding: 6px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+
+      &.empty {
+        background: transparent;
+        cursor: default;
+      }
+
+      &.selected {
+        background-color: #1976d2;
+        color: white;
+      }
+
+      &.focused {
+        outline: 2px solid #1976d2;
+      }
+
+      &:hover:not(.empty):not(.selected) {
+        background: #e3f2fd;
+      }
+    }
+  }
+}

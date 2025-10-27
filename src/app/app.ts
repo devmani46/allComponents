@@ -13,6 +13,7 @@ import { Combobox } from './components/combobox/combobox';
 import { Country } from './services/country';
 import { CdkRecycleRows, CdkTableModule } from '@angular/cdk/table';
 import { CdkTable } from './components/cdk-table/cdk-table';
+import { DatePicker } from './components/date-picker/date-picker';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ import { CdkTable } from './components/cdk-table/cdk-table';
     Combobox,
     CdkTable,
     CdkTableModule,
+    DatePicker,
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
