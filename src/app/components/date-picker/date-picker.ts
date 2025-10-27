@@ -178,9 +178,9 @@ export class DatePicker {
       const selectedYear = this.displayMonth.getFullYear();
       const currentYear = new Date().getFullYear();
       const index = selectedYear - (currentYear - 100);
-      const buttonHeight = 40; // Approximate height of each button
-      const rowIndex = Math.floor(index / 3);
-      const scrollTop = rowIndex * buttonHeight + buttonHeight / 2; // Center the selected year
+      const buttonHeight = 40; 
+      const rowIndex = Math.floor(index / 3); 
+      const scrollTop = rowIndex * buttonHeight + buttonHeight * 3; 
       this.yearSelector.nativeElement.scrollTop = scrollTop;
     }
   }
