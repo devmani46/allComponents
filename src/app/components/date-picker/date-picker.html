@@ -68,31 +68,59 @@
   </div>
 
   @if (showCalendar) {
-    <div class="calendar show">
+    <div class="calendar show" [class.above]="calendarPosition === 'above'" [class.below]="calendarPosition === 'below'">
       <div class="header">
         <button (click)="prevMonth()">‹</button>
-        <span>{{ months[displayMonth.getMonth()] }} {{ displayMonth.getFullYear() }}</span>
+        <div class="month-year-selector">
+          <button class="month-btn" (click)="toggleMonthSelector(); $event.stopPropagation()">{{ months[displayMonth.getMonth()] }}</button>
+          <button class="year-btn" (click)="toggleYearSelector(); $event.stopPropagation()">{{ displayMonth.getFullYear() }}</button>
+        </div>
         <button (click)="nextMonth()">›</button>
       </div>
 
-      <div class="weekdays">
-        @for (d of ['S','M','T','W','T','F','S']; track d) {
-          <div>{{ d }}</div>
-        }
-      </div>
+      @if (showMonthSelector) {
+        <div class="month-selector">
+          @for (month of months; track month; let i = $index) {
+            <button
+              [class.selected]="i === displayMonth.getMonth()"
+              (click)="selectMonth(i); $event.stopPropagation()"
+            >{{ month }}</button>
+          }
+        </div>
+      }
 
-      <div class="days">
-        @for (day of daysInMonth; track day) {
-          <div
-            [class.empty]="!day"
-            [class.selected]="selectedDate && day && day.toDateString() === selectedDate.toDateString()"
-            [class.focused]="focusedDate && day && day.toDateString() === focusedDate.toDateString()"
-            (click)="selectDate(day)"
-          >
-            {{ day ? day.getDate() : '' }}
-          </div>
-        }
-      </div>
+      @if (showYearSelector) {
+        <div class="year-selector" #yearSelector>
+          @for (year of years; track year) {
+            <button
+              [class.selected]="year === displayMonth.getFullYear()"
+              [attr.data-year]="year"
+              (click)="selectYear(year); $event.stopPropagation()"
+            >{{ year }}</button>
+          }
+        </div>
+      }
+
+      @if (!showMonthSelector && !showYearSelector) {
+        <div class="weekdays">
+          @for (d of ['S','M','T','W','T','F','S']; track d) {
+            <div>{{ d }}</div>
+          }
+        </div>
+
+        <div class="days">
+          @for (day of daysInMonth; track day) {
+            <div
+              [class.empty]="!day"
+              [class.selected]="selectedDate && day && day.toDateString() === selectedDate.toDateString()"
+              [class.focused]="focusedDate && day && day.toDateString() === focusedDate.toDateString()"
+              (click)="selectDate(day)"
+            >
+              {{ day ? day.getDate() : '' }}
+            </div>
+          }
+        </div>
+      }
     </div>
   }
 </div>

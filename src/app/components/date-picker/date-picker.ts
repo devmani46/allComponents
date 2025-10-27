@@ -15,6 +15,7 @@ export class DatePicker {
   @ViewChild('dayInput', { static: false }) dayInput!: ElementRef;
   @ViewChild('yearInput', { static: false }) yearInput!: ElementRef;
   @ViewChild('container', { static: false }) container!: ElementRef;
+  @ViewChild('yearSelector', { static: false }) yearSelector!: ElementRef;
 
   month = '';
   day = '';
@@ -30,9 +31,14 @@ export class DatePicker {
     'January','February','March','April','May','June',
     'July','August','September','October','November','December'
   ];
+  showMonthSelector = false;
+  showYearSelector = false;
+  years: number[] = [];
+  calendarPosition: 'above' | 'below' = 'below';
 
   ngOnInit() {
     this.generateCalendar();
+    this.generateYears();
   }
 
   setActive(part: 'month' | 'day' | 'year') {
@@ -82,6 +88,24 @@ export class DatePicker {
       this.focusedDate = this.selectedDate || new Date();
       this.displayMonth = new Date(this.focusedDate);
       this.generateCalendar();
+      this.adjustCalendarPosition();
+    }
+  }
+
+  adjustCalendarPosition() {
+    if (this.container) {
+      const rect = this.container.nativeElement.getBoundingClientRect();
+      const calendarHeight = 280; // Fixed height from SCSS
+      const windowHeight = window.innerHeight;
+      const spaceBelow = windowHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      // If there's not enough space below but enough above, show above
+      if (spaceBelow < calendarHeight && spaceAbove > calendarHeight) {
+        this.calendarPosition = 'above';
+      } else {
+        this.calendarPosition = 'below';
+      }
     }
   }
 
@@ -126,6 +150,53 @@ export class DatePicker {
     this.daysInMonth = days;
   }
 
+  generateYears() {
+    const currentYear = new Date().getFullYear();
+    this.years = [];
+    for (let i = currentYear - 100; i <= currentYear + 100; i++) {
+      this.years.push(i);
+    }
+  }
+
+  toggleMonthSelector() {
+    this.showMonthSelector = !this.showMonthSelector;
+    this.showYearSelector = false;
+  }
+
+  toggleYearSelector() {
+    this.showYearSelector = !this.showYearSelector;
+    this.showMonthSelector = false;
+    if (this.showYearSelector) {
+      setTimeout(() => {
+        this.scrollToSelectedYear();
+      });
+    }
+  }
+
+  scrollToSelectedYear() {
+    if (this.yearSelector) {
+      const selectedYear = this.displayMonth.getFullYear();
+      const currentYear = new Date().getFullYear();
+      const index = selectedYear - (currentYear - 100);
+      const buttonHeight = 40; // Approximate height of each button
+      const rowIndex = Math.floor(index / 3);
+      const scrollTop = rowIndex * buttonHeight + buttonHeight / 2; // Center the selected year
+      this.yearSelector.nativeElement.scrollTop = scrollTop;
+    }
+  }
+
+  selectMonth(monthIndex: number) {
+    this.displayMonth = new Date(this.displayMonth.getFullYear(), monthIndex);
+    this.generateCalendar();
+    this.showMonthSelector = false;
+  }
+
+  selectYear(year: number) {
+    this.displayMonth = new Date(year, this.displayMonth.getMonth());
+    this.generateCalendar();
+    this.showYearSelector = false;
+  }
+
   focusSegment(part: 'month' | 'day' | 'year') {
     setTimeout(() => {
       if (part === 'month' && this.monthInput) {
@@ -157,7 +228,23 @@ export class DatePicker {
   onDocumentClick(event: Event) {
     if (this.container && !this.container.nativeElement.contains(event.target)) {
       this.showCalendar = false;
+      this.showMonthSelector = false;
+      this.showYearSelector = false;
       this.activePart = null;
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: Event) {
+    if (this.showCalendar) {
+      this.adjustCalendarPosition();
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event: Event) {
+    if (this.showCalendar) {
+      this.adjustCalendarPosition();
     }
   }
 
