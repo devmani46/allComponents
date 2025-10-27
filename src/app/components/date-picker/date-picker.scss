@@ -127,6 +127,14 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     z-index: 10;
     width: 260px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    &.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     .header {
       display: flex;
