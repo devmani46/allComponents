@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,10 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./date-picker.scss'],
 })
 export class DatePicker {
+  @ViewChild('monthInput', { static: false }) monthInput!: ElementRef;
+  @ViewChild('dayInput', { static: false }) dayInput!: ElementRef;
+  @ViewChild('yearInput', { static: false }) yearInput!: ElementRef;
+
   month = '';
   day = '';
   year = '';
@@ -42,6 +46,15 @@ export class DatePicker {
     if (part === 'month') this.month = val;
     if (part === 'day') this.day = val;
     if (part === 'year') this.year = val;
+
+    // Auto-advance to next segment
+    if (part === 'month' && val.length === 2 && this.activePart === 'month') {
+      this.setActive('day');
+      this.focusSegment('day');
+    } else if (part === 'day' && val.length === 2 && this.activePart === 'day') {
+      this.setActive('year');
+      this.focusSegment('year');
+    }
 
     if (this.month.length === 2 && this.day.length === 2 && this.year.length === 4) {
       const m = parseInt(this.month, 10);
@@ -112,31 +125,61 @@ export class DatePicker {
     this.daysInMonth = days;
   }
 
+  focusSegment(part: 'month' | 'day' | 'year') {
+    setTimeout(() => {
+      if (part === 'month' && this.monthInput) {
+        this.monthInput.nativeElement.focus();
+      } else if (part === 'day' && this.dayInput) {
+        this.dayInput.nativeElement.focus();
+      } else if (part === 'year' && this.yearInput) {
+        this.yearInput.nativeElement.focus();
+      }
+    });
+  }
+
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    if (!this.showCalendar) return;
-    const focus = this.focusedDate || new Date(this.displayMonth);
-    let newDate = new Date(focus);
+    if (this.showCalendar) {
+      const focus = this.focusedDate || new Date(this.displayMonth);
+      let newDate = new Date(focus);
 
-    switch (event.key) {
-      case 'ArrowLeft': newDate.setDate(focus.getDate() - 1); break;
-      case 'ArrowRight': newDate.setDate(focus.getDate() + 1); break;
-      case 'ArrowUp': newDate.setDate(focus.getDate() - 7); break;
-      case 'ArrowDown': newDate.setDate(focus.getDate() + 7); break;
-      case 'Enter': this.selectDate(focus); return;
-      case 'Escape': this.showCalendar = false; return;
-      default: return;
-    }
+      switch (event.key) {
+        case 'ArrowLeft': newDate.setDate(focus.getDate() - 1); break;
+        case 'ArrowRight': newDate.setDate(focus.getDate() + 1); break;
+        case 'ArrowUp': newDate.setDate(focus.getDate() - 7); break;
+        case 'ArrowDown': newDate.setDate(focus.getDate() + 7); break;
+        case 'Enter': this.selectDate(focus); return;
+        case 'Escape': this.showCalendar = false; return;
+        default: return;
+      }
 
-    event.preventDefault();
-    this.focusedDate = newDate;
+      event.preventDefault();
+      this.focusedDate = newDate;
 
-    if (
-      newDate.getMonth() !== this.displayMonth.getMonth() ||
-      newDate.getFullYear() !== this.displayMonth.getFullYear()
-    ) {
-      this.displayMonth = new Date(newDate);
-      this.generateCalendar();
+      if (
+        newDate.getMonth() !== this.displayMonth.getMonth() ||
+        newDate.getFullYear() !== this.displayMonth.getFullYear()
+      ) {
+        this.displayMonth = new Date(newDate);
+        this.generateCalendar();
+      }
+    } else {
+      // Handle arrow navigation between segments
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        let nextPart: 'month' | 'day' | 'year' | null = null;
+        if (event.key === 'ArrowLeft') {
+          if (this.activePart === 'day') nextPart = 'month';
+          else if (this.activePart === 'year') nextPart = 'day';
+        } else if (event.key === 'ArrowRight') {
+          if (this.activePart === 'month') nextPart = 'day';
+          else if (this.activePart === 'day') nextPart = 'year';
+        }
+        if (nextPart) {
+          this.setActive(nextPart);
+          this.focusSegment(nextPart);
+        }
+      }
     }
   }
 }

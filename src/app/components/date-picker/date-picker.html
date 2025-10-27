@@ -1,5 +1,5 @@
 <div class="date-picker-container" tabindex="0" (keydown)="onKeyDown($event)">
-  <label>Modern Date Picker</label>
+  <label> Date Picker</label>
 
   <div class="input-wrapper" (click)="toggleCalendar()">
     <div class="segmented-input" (click)="$event.stopPropagation()">
@@ -11,6 +11,7 @@
       >
         <span class="placeholder" [class.hidden]="month.length > 0 || activePart === 'month'">MM</span>
         <input
+          #monthInput
           type="text"
           maxlength="2"
           [(ngModel)]="month"
@@ -29,6 +30,7 @@
       >
         <span class="placeholder" [class.hidden]="day.length > 0 || activePart === 'day'">DD</span>
         <input
+          #dayInput
           type="text"
           maxlength="2"
           [(ngModel)]="day"
@@ -47,6 +49,7 @@
       >
         <span class="placeholder" [class.hidden]="year.length > 0 || activePart === 'year'">YYYY</span>
         <input
+          #yearInput
           type="text"
           maxlength="4"
           [(ngModel)]="year"
